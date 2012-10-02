@@ -1,0 +1,113 @@
+module chrono.date;
+
+import chrono.month;
+import chrono.weekday;
+
+// Should public be default?
+public:
+
+struct Date {
+  month: Month
+  day:   Day
+  year:  long
+}
+
+function Date.isLeapYear() : bool {
+  return (.year % 400 == 0) || (.year % 100 != 0 && .year % 4 == 0)
+}
+
+function Date.dayOfWeek() : Weekday {
+  /* magicNum is a number manipulated in order to determine the day
+     of the week as part of the Gregorian calendar algorithm */
+  let yearNum = -1;
+
+  // there's gotta be a better way to do this.
+  if ((.year >= 1700 && .year <= 1799) ||
+      (.year >= 2100 && .year <= 2199) ||
+      (.year >= 2500 && .year <= 2599) ) {
+    yearNum = 4
+  }
+  else if ((.year >= 1800 && .year <= 1899) ||
+           (.year >= 2200 && .year <= 2299) ||
+           (.year >= 2600 && .year <= 2699) ) {
+    yearNum = 2
+  }
+  else if ((.year >= 1900 && .year <= 1999) ||
+           (.year >= 2300 && .year <= 2399) ){
+    yearNum = 0
+  }
+  else if ((.year >= 2000 && .year <= 2099) ||
+           (.year >= 2400 && .year <= 2499) ){
+    yearNum = 6
+  }
+  else {
+    // year with unknown value
+  }
+
+  let yearDigitNum = .year % 100
+  let leapYearNum  = yearDigitNum / 4
+  let monthNum     = -1
+
+  /* Do we need 'Month.' qualifier in match expressions? The case is directly tied to the match,
+     so I assume we don't... but I'll just leave them in here.
+
+     Is 'break' the common case (and thus removed as keywords)? Can we jump to a case? Maybe with
+     a 'match Month.January' statement? but what would it express?!? */
+
+  match (_month) {
+    case Month.January:
+    case Month.October:
+      monthNum = 0
+
+    case Month.February:
+    case Month.March:
+    case Month.November:
+      monthNum = 3
+
+    case Month.April:
+    case Month.July:
+      monthNum = 6
+
+    case Month.May:
+      monthNum = 1
+
+    case Month.June:
+      monthNum = 4
+
+    case Month.August:
+      monthNum = 2
+
+    case Month.September:
+    case Month.December:
+      monthNum = 5
+
+    // I don't mind 'default' as a keyword, although I understand the want for less of them
+    // But '_' is an acceptable identifier... so that sucks
+
+    // default:
+    case _:
+      // Um. I doesn't do anything. It's just there to be there. Because in D, it's a runtime error.
+  }
+
+  let dayNum = (yearNum + yearDigitNum + leapYearNum + monthNum + .day) % 7
+
+  return cast[Weekday]dayNum
+}
+
+function Date.dayOfYear : uint {
+  if (.month == Month.January) {
+    return .day
+  }
+
+  if (.month == Month.February) {
+    return .day + 31
+  }
+
+  let days = cast[int]Round.floor(30.6 * .month - 91.4) + .day + 59
+
+  if (.isLeapYear()) {
+    days++
+  }
+
+  return days
+}

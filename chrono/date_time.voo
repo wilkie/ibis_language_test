@@ -1,0 +1,152 @@
+module chrono.date_time;
+
+import chrono.month;
+import chrono.weekday;
+import chrono.date;
+import chrono.time;
+
+import math.round;
+import math.sign;
+
+/* Conditional code? */
+// version(Windows) {
+//   // import to get the system time under windows
+//   import binding.win32.winbase;
+// }
+
+public:
+
+struct DateTime {
+  month:        Month
+  day:          uint
+  year:         long
+  microseconds: long
+}
+
+/* How to do a function that doesn't take a this?
+   As in a static function. */
+function DateTime.Now() : DateTime {
+  // Determine system time, UTC
+}
+
+function DateTime.time() : Time {
+  let ret : Time = {
+    microseconds: .microseconds
+  }
+
+  return ret
+}
+
+function DateTime.hour() : long {
+  let h, ms, s, m : long
+  let tmp = .microseconds
+
+  tmp /= 1000000
+  tmp /= 60
+  tmp /= 60
+
+  return tmp
+}
+
+function DateTime.minute() : long {
+  let h, ms, s, m : long
+  let tmp = .microseconds
+
+  tmp /= 1000000
+  tmp /= 60
+
+  return tmp
+}
+
+function DateTime.second() : long {
+  let h, ms, s, m : long
+  let tmp = .microseconds
+
+  tmp /= 1000000
+
+  return tmp
+}
+
+function DateTime.milliseconds() : long {
+  return .microseconds / 1000;
+}
+
+function DateTime.isLeapYear() : bool {
+  let date : Date = {
+    month: .month
+    year:  .year
+    day:   .day
+  }
+
+  return date.isLeapYear();
+}
+
+function DateTime.dayOfYear() : uint {
+  let date : Date = {
+    month: .month
+    year:  .year
+    day:   .day
+  }
+
+  return date.dayOfYear();
+}
+
+function DateTime.dayOfWeek() : Weekday {
+  let date : Date = {
+    month: .month
+    year:  .year
+    day:   .day
+  }
+
+  return date.dayOfWeek();
+}
+
+function DateTime.compare(b: DateTime) : long {
+  let dt1 = .totalMicros
+  let dt2 = b.totalMicros
+
+  if (dt1 < dt2) {
+    return cast[int](dt2 - dt1)
+  }
+
+  return cast[int](dt1 - dt2)
+}
+
+function DateTime.subtract(b: DateTime) : Time {
+  let time : Time = {
+    microseconds: .compare(b)
+  }
+
+  return time
+}
+
+function DateTime.isEqualTo(b: DateTime) : bool {
+  // Do byte compare on struct??
+  return this == b
+}
+
+private function DateTime.totalMicros() : long {
+  let days = 365 * .year;
+
+  let leapYears : long;
+
+  if (.year > 1600) {
+    // Julian leap years up to 1200
+    leapYears = 400;
+
+    // Extras for Gregorian
+    leapYears += (.year - 1600) / 4   // Leap year every four years
+    leapYears -= (.year - 1600) / 100 // Except every 100 years
+    leapYears += (.year - 1600) / 400 // But certainly every 400!
+  }
+  else {
+    // Julian leap years
+    leapYears = .year / 4
+  }
+
+  days += leapYears
+
+  /* Hopefully, everything understands the math in the ( ... ) section
+     is a long typed expression. */
+  return .microseconds + days * (24 * 60 * 60 * 1000000)
+}

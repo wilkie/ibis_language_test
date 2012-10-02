@@ -1,0 +1,64 @@
+module chrono.time;
+
+public:
+
+struct Time {
+  microseconds: long
+}
+
+function Time.hour() : long {
+  let tmp = _micros
+
+  tmp /= 1000000
+  tmp /= 60
+  tmp /= 60
+
+  return tmp
+}
+
+function minute() : long {
+  let tmp = .microseconds
+
+  tmp /= 1000000
+  tmp /= 60
+
+  return tmp
+}
+
+function Time.second() : long {
+  let tmp = .microseconds
+
+  tmp /= 1000000
+
+  return tmp
+}
+
+function Time.milliseconds() : long {
+  let tmp = .microseconds
+
+  return tmp / 1000
+}
+
+function Time.add(b: Time) : Time {
+  let ret: Time = {
+    microseconds: .microseconds + b.microseconds
+  }
+
+  return ret;
+}
+
+function Time.subtract(b: Time) : Time {
+  let ret: Time = {
+    microseconds: .microseconds - b.microseconds
+  }
+
+  return ret;
+}
+
+function Time.compare(b: Time) : int {
+  return .microseconds - b.microseconds
+}
+
+function Time.isEqualTo(b: Time) : bool {
+  return .microseconds == b.microseconds;
+}
