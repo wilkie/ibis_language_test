@@ -1,12 +1,12 @@
-module chrono.date_time;
+module chrono.date_time
 
-import chrono.month;
-import chrono.weekday;
-import chrono.date;
-import chrono.time;
+import chrono.month
+import chrono.weekday
+import chrono.date
+import chrono.time
 
-import math.round;
-import math.sign;
+import math.round
+import math.sign
 
 /* Conditional code? */
 // version(Windows) {
@@ -23,10 +23,15 @@ struct DateTime {
   microseconds: long
 }
 
-/* How to do a function that doesn't take a this?
-   As in a static function. */
-function DateTime.Now() : DateTime {
+// Module functions
+function now() : DateTime {
   // Determine system time, UTC
+  return {
+    month:        January
+    day:          1
+    year:         2012
+    microseconds: 0
+  }
 }
 
 function DateTime.time() : Time {
@@ -68,7 +73,7 @@ function DateTime.second() : long {
 }
 
 function DateTime.milliseconds() : long {
-  return .microseconds / 1000;
+  return .microseconds / 1000
 }
 
 function DateTime.isLeapYear() : bool {
@@ -78,7 +83,7 @@ function DateTime.isLeapYear() : bool {
     day:   .day
   }
 
-  return date.isLeapYear();
+  return date.isLeapYear()
 }
 
 function DateTime.dayOfYear() : uint {
@@ -88,7 +93,7 @@ function DateTime.dayOfYear() : uint {
     day:   .day
   }
 
-  return date.dayOfYear();
+  return date.dayOfYear()
 }
 
 function DateTime.dayOfWeek() : Weekday {
@@ -98,7 +103,7 @@ function DateTime.dayOfWeek() : Weekday {
     day:   .day
   }
 
-  return date.dayOfWeek();
+  return date.dayOfWeek()
 }
 
 function DateTime.compare(b: DateTime) : long {

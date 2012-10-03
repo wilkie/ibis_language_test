@@ -1,9 +1,15 @@
-module chrono.time;
+module chrono.time
 
 public:
 
 struct Time {
   microseconds: long
+}
+
+function now() : Time {
+  return {
+    microseconds: 0
+  }
 }
 
 function Time.hour() : long {

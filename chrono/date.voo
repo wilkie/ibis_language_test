@@ -1,7 +1,7 @@
-module chrono.date;
+module chrono.date
 
-import chrono.month;
-import chrono.weekday;
+import chrono.month
+import chrono.weekday
 
 // Should public be default?
 public:
@@ -10,6 +10,14 @@ struct Date {
   month: Month
   day:   Day
   year:  long
+}
+
+function now() : Date {
+  return {
+    month: January
+    day:   1
+    year:  2012
+  }
 }
 
 function Date.isLeapYear() : bool {
@@ -55,30 +63,30 @@ function Date.dayOfWeek() : Weekday {
      a 'match Month.January' statement? but what would it express?!? */
 
   match (_month) {
-    case Month.January:
-    case Month.October:
+    case January:
+    case October:
       monthNum = 0
 
-    case Month.February:
-    case Month.March:
-    case Month.November:
+    case February:
+    case March:
+    case November:
       monthNum = 3
 
-    case Month.April:
-    case Month.July:
+    case April:
+    case July:
       monthNum = 6
 
-    case Month.May:
+    case May:
       monthNum = 1
 
-    case Month.June:
+    case June:
       monthNum = 4
 
-    case Month.August:
+    case August:
       monthNum = 2
 
-    case Month.September:
-    case Month.December:
+    case September:
+    case December:
       monthNum = 5
 
     // I don't mind 'default' as a keyword, although I understand the want for less of them
@@ -95,11 +103,11 @@ function Date.dayOfWeek() : Weekday {
 }
 
 function Date.dayOfYear : uint {
-  if (.month == Month.January) {
+  if (.month == January) {
     return .day
   }
 
-  if (.month == Month.February) {
+  if (.month == February) {
     return .day + 31
   }
 
